@@ -39,7 +39,7 @@ Working with Dockerfile
 docker build -t LOGIN/ryben:v1 .         | running the created Dockerfile with the name ryben and subfile v1
 docker run -d -p 8446:80 ryben:v1        | запуск для перевірки через порт 8446
 
-docker tag alex:v1 ryben:copy            | creating a copy via Tag
+docker tag ryben:v1 ryben:copy            | creating a copy via Tag
 
 docker exec -it #CONTAINERID /bin/bash   | login to the created mini container
 exit                                     | exit from the mini virtual machine
