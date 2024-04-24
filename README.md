@@ -11,7 +11,7 @@ Display system-wide information
 docker info
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-## IMAGES
+## Run a new Container
 
 > [!NOTE]
 > Docker images are a lightweight, standalone, executable package
@@ -19,23 +19,43 @@ of software that includes everything needed to run an application:
 code, runtime, system tools, system libraries and settings.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Build an Image from a Dockerfile
-docker build -t <image_name>
+Start a new Container from an Image
+docker run IMAGE
+docker run nginx
 
-Build an Image from a Dockerfile without the cache
-docker build -t <image_name> . –no-cache
+...and assign it a name
+docker run ——name CONTAINER IMAGE
+docker run --name web nginx
 
-List local images
-docker images
+...and map a port
+docker run -p HOSTPORT:CONTAINERPORT IMAGE
+docker run -p 8080:80 nginx
 
-Delete an Image
-docker rmi <image_name>
+...and map all ports
+docker run -P IMAGE
+docker run -P nginx
 
-Remove all unused images
-docker image prune
+...and start container in background
+docker run -d IMAGE
+docker run -d nginx
+
+...and assign it a hostname
+docker run --hostname HOSTNAME IMAGE
+docker run --hostname srv nginx
+
+...and add a dns entry
+docker run --add-host HOSTNAME: IP IMAGE
+
+...and map a local directory into the container
+docker run -v HOSTDIR: TARGETDIR IMAGE
+docker run -v ~/:/usr/share/nginx/html nginx
+
+...but change the entrypoint
+docker run -it --entrypoint EXECUTABLE IMAGE
+docker run -it --entrypoint bash nginx
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-## CONTAINERS
+## Manage Containers
 
 > [!NOTE]
 > A container is a runtime instance of a docker image. A container
@@ -45,38 +65,124 @@ that it works uniformly despite differences for instance between
 development and staging.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Create and run a container from an image, with a custom name:
-docker run --name <container_name> <image_name>
-
-Run a container with and publish a container’s port(s) to the host.
-docker run -p <host_port>:<container_port> <image_name>
-
-Run a container in the background
-docker run -d <image_name>
-
-Start or stop an existing container:
-docker start|stop <container_name> (or <container-id>)
-
-Remove a stopped container:
-docker rm <container_name>
-
-Open a shell inside a running container:
-docker exec -it <container_name> sh
-
-Fetch and follow the logs of a container:
-docker logs -f <container_name>
-
-To inspect a running container:
-docker inspect <container_name> (or <container_id>)
-
-To list currently running containers:
+Show a list of running containers
 docker ps
 
-List all docker containers (running and stopped):
-docker ps --all
+Show a list of all containers
+docker ps -a
 
-View resource usage stats
-docker container stats
+Delete a container
+docker rm CONTAINER
+docker rm web
+
+Delete a running container
+docker rm -f CONTAINER
+docker rm -f web
+
+Delete stopped containers
+docker container prune
+
+Stop a running container
+docker stop CONTAINER
+docker stop web
+
+Start a stopped container
+docker start CONTAINER
+docker start web
+
+Copy a file from a container to the host
+docker cp CONTAINER:SOURCE TARGET
+docker cp web:/index.html index.html
+
+Copy a file from the host to a container
+docker cp TARGET CONTAINER:SOURCE
+docker cp index.html web:/index.html
+
+Start a shell inside a running container
+docker exec -it CONTAINER EXECUTABLE
+docker exec -it web bash
+
+Rename a container
+docker rename OLD_NAME NEW_NAME
+docker rename 096 web
+
+Create an image out of container
+docker commit CONTAINER
+docker commit web
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Manage Images
+
+~~~~~~~~~~~~~~~~~~~~~~~~
+Download an image
+docker pull IMAGE [: TAG]
+docker pull nginx
+
+Upload an image to a repository
+docker push IMAGE
+docker push myimage:1.0
+
+Delete an image
+docker rmi IMAGE
+
+Show a list of all Images
+docker images
+
+Delete dangling images
+docker image prune
+
+Delete all unused images
+docker image prune -a
+
+Build an image from a Dockerfile
+docker build DIRECTORY
+docker build .
+
+Tag an image
+docker tag IMAGE NEWIMAGE
+docker tag ubuntu ubuntu: 18.04
+
+Build and tag an image from a Dockerfile
+docker build -t IMAGE DIRECTORY
+docker build -t myimage .
+
+Save an image to tar file
+docker save IMAGE › FILE
+docker save nginx › nginx. tar
+
+Load an image from a tar file
+docker load -i TARFILE
+docker load -i nginx.tar
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Info & Stats
+
+~~~~~~~~~~~~~~~~~~~~~~~~
+Show the logs of a container
+docker logs CONTAINER
+docker logs web
+
+Show stats of running containers
+docker stats
+
+Show processes of container
+docker top CONTAINER
+docker top web
+
+Show installed docker version
+docker version
+
+Get detailed info about an object
+docker inspect NAME
+docker inspect nginx
+
+Show all modified files in container
+docker diff CONTAINER
+docker diff web
+
+Show mapped ports of a container
+docker port CONTAINER
+docker port web
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## DOCKER HUB
