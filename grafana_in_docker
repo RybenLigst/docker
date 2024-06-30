@@ -1,0 +1,17 @@
+# 1. Start the Grafana container:
+Run the command to start the Grafana container:
+
+sh: "docker run -d --name=grafana --restart unless-stopped -p 3000:3000 grafana/grafana"
+
+# 2. Open Grafana in a browser:
+Open your browser and go to http://localhost:3000. You should see the Grafana login screen.
+
+# 3. Login to Grafana:
+ By default, the login credentials are:
+
+ Login: admin
+ Password: admin
+
+ You will be prompted to change your password the first time you log in.
+
+These steps will get you up and running with Grafana in Docker quickly.
