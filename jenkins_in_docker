@@ -1,0 +1,54 @@
+# 1. Starting the Jenkins container
+
+Next, you need to start the Jenkins container. To do this, use the command:
+
+sh: "docker run -d -p 8080:8080 -p 50000:50000 --name jenkins jenkins/jenkins:lts"
+
+# 2. Checking Jenkins work
+
+After the container is running, you can check if Jenkins is running by opening a web browser and going to:
+
+http://localhost:8080
+
+# 3. Getting the initial password
+
+For the initial setup of Jenkins, you will need the initial password that resides in the container. You can get it using the command:
+
+sh: "docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword"
+
+Copy this password and paste it on the Jenkins web page to continue the setup.
+
+# 4. Additional configuration (optional)
+
+You can add Jenkins data storage on your host using volume:
+
+sh: "docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home --name jenkins jenkins/jenkins:lts"
+
+This will store the Jenkins data in the jenkins_home volume, allowing the Jenkins configuration to persist even after the container is restarted.
+
+# 5. Using Docker Compose (optional)
+
+If you want to use Docker Compose, create a docker-compose.yml file with the following content:
+
+yaml
+"
+version: '3.8'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+volumes:
+  jenkins_home:
+"
+Start Docker Compose with the command:
+
+sh: "docker-compose up -d"
+
+This will make it easy to manage Jenkins and other services with a single configuration file.
+
+That's all. You have successfully uploaded Jenkins to Docker.
