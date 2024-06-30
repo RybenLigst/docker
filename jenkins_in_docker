@@ -53,4 +53,4 @@ sh: "docker-compose up -d"
 
 This will make it easy to manage Jenkins and other services with a single configuration file.
 
-That's all. You have successfully uploaded Jenkins to Docker.
+That's all.
