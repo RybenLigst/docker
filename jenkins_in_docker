@@ -4,6 +4,8 @@ Next, you need to start the Jenkins container. To do this, use the command:
 
 sh: "docker run -d -p 8080:8080 -p 50000:50000 --name jenkins jenkins/jenkins:lts"
 
+sh: "docker run -d -p 8080:8080 -p 50000:50000 --name jenkins --restart unless-stopped -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts" (With auto restart)
+
 # 2. Checking Jenkins work
 
 After the container is running, you can check if Jenkins is running by opening a web browser and going to:
